@@ -1,0 +1,155 @@
+/* Global Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html, body {
+    height: 100%;
+    overflow: hidden;
+}
+
+body {
+    background: linear-gradient(180deg, #000000 0%, #3c2f3a 50%, #000000 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.main-container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 20px;
+}
+
+.card {
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 1rem;
+    overflow: hidden;
+    height: auto;
+    max-height: 90vh;
+}
+
+.image-section {
+    height: 100%;
+    min-height: 500px;
+    max-height: 90vh;
+    position: relative;
+}
+
+.image-section img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 1rem 0 0 1rem;
+}
+
+.image-overlay {
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    border-radius: 1rem 0 0 1rem;
+    padding: 20px;
+}
+
+.on-text {
+    margin-top: 20%;
+}
+
+.gradient-button {
+    background: linear-gradient(45deg, #8B31FF, #6B24C2);
+    border: none;
+    color: white;
+    transition: all 0.3s ease;
+}
+
+.gradient-button:hover {
+    background: linear-gradient(45deg, #6B24C2, #8B31FF);
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(107, 36, 194, 0.3);
+}
+
+.form-control:focus {
+    border-color: #8B31FF;
+    box-shadow: 0 0 0 0.2rem rgba(139, 49, 255, 0.25);
+}
+
+.link-purple {
+    color: #8B31FF;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.link-purple:hover {
+    color: #6B24C2;
+    text-decoration: underline;
+}
+
+.logo-section {
+    color: #8B31FF;
+}
+
+.form-floating > label {
+    color: #666;
+}
+
+.password-toggle {
+    background: none;
+    border: none;
+    color: #6c757d;
+    padding: 0.375rem 0.75rem;
+    font-size: 1rem;
+    transition: color 0.15s ease-in-out;
+}
+
+.password-toggle:hover {
+    color: #8B31FF;
+}
+
+.form-floating > .password-toggle {
+    padding-top: 1.625rem;
+    padding-bottom: 0.625rem;
+}
+
+/* Error message styles */
+.error-message {
+    color: #dc3545;
+    font-size: 0.875rem;
+    margin-top: 0.25rem;
+}
+
+.success-message {
+    color: #198754;
+    font-size: 0.875rem;
+    margin-top: 0.25rem;
+}
+
+/* Cart styles */
+.cart-item {
+    border-bottom: 1px solid #dee2e6;
+    padding: 1rem 0;
+}
+
+.cart-total {
+    font-size: 1.25rem;
+    font-weight: bold;
+}
+
+@media (max-width: 768px) {
+    .image-section {
+        min-height: 200px;
+    }
+
+    .card {
+        margin: 1rem;
+        max-height: none;
+    }
+
+    .main-container {
+        margin: 10px;
+    }
+}

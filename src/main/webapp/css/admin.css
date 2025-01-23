@@ -1,0 +1,88 @@
+body {
+    background: linear-gradient(180deg, #000000 0%, #3c2f3a 50%, #000000 100%);
+    min-height: 100vh;
+}
+
+.container {
+    margin-left: 250px;
+    padding: 20px;
+    width: 81%;
+}
+.accordion-body{
+    color: black;
+    border: none;
+}
+
+
+.accordion-button {
+    background: linear-gradient(180deg, #000000 0%, #3c2f3a 50%, #000000 100%);!important;
+    color: white !important;
+}
+
+.accordion-button:not(.collapsed) {
+    /*background: linear-gradient(180deg, #000000 0%, #3c2f3a 50%, #000000 100%);!important;*/
+}
+
+.form-control {
+    border: 2px solid #e0e0e0;
+    border-radius: 25px;
+    padding: 0.75rem 1.25rem;
+    transition: all 0.3s ease;
+}
+
+.form-control:focus {
+    border-color: #8B31FF;
+    box-shadow: 0 0 0 0.2rem rgba(139, 49, 255, 0.25);
+}
+
+.btn-primary {
+    background: linear-gradient(45deg, #8B31FF, #6B24C2);
+    border: none;
+    border-radius: 25px;
+    padding: 0.75rem 1.5rem;
+    transition: all 0.3s ease;
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(139, 49, 255, 0.3);
+}
+
+.table {
+    background: white;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.table thead th {
+    /*background: linear-gradient(45deg, #8B31FF, #6B24C2);*/
+    color: black;
+    border: none;
+}
+
+.btn-delete {
+    color: #dc3545;
+    border: none;
+    background: none;
+    transition: all 0.3s ease;
+}
+
+.btn-delete:hover {
+    color: #bd2130;
+    transform: scale(1.1);
+}
+
+.search-container {
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 15px;
+    padding: 2rem;
+    margin-top: 2rem;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.error-label {
+    color: #dc3545;
+    font-size: 0.875rem;
+    margin-top: 0.5rem;
+    display: none;
+}
