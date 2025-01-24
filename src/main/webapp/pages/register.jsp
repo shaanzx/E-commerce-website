@@ -35,6 +35,13 @@
 
                     <h4 class="fw-normal mb-3 pb-3" style="letter-spacing: 1px;">Create your account</h4>
 
+                    <!-- Success message display -->
+                    <% if (request.getAttribute("message") != null) { %>
+                    <div class="alert alert-success" role="alert">
+                        <%= request.getAttribute("message") %>
+                    </div>
+                    <% } %>
+
                     <!-- Error message display -->
                     <% if (request.getAttribute("error") != null) { %>
                     <div class="alert alert-danger" role="alert">
@@ -42,7 +49,7 @@
                     </div>
                     <% } %>
 
-                    <form id="registerForm" action="register" method="post" onsubmit="return validateForm('registerForm')">
+                    <form id="registerForm" action="${pageContext.request.contextPath}/save-customer" method="post" onsubmit="return validateForm('registerForm')">
                         <div class="form-floating mb-3">
                             <input type="text" class="form-control" id="registerName" name="fullName"
                                    placeholder="Full Name" required>
