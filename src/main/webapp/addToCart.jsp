@@ -319,7 +319,7 @@
             <div class="cart-item">
                 <div class="row">
                     <div class="col-md-5">
-                        <img src="../assets/shoes-hero.jpg" alt="Nike Air Max 270" class="cart-item-image">
+                        <img src="assets/shoes-hero.jpg" alt="Nike Air Max 270" class="cart-item-image">
                     </div>
                     <div class="col-md-7">
                         <h2 class="product-title">Nike Air Max 270</h2>

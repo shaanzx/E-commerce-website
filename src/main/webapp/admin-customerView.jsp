@@ -1,3 +1,5 @@
+<%@ page import="lk.ijse.ecommerce.dto.CustomerDTO" %>
+<%@ page import="java.util.List" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!DOCTYPE html>
 <html lang="en">
@@ -7,7 +9,7 @@
     <title>Customer View - Shoe Mart</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <link href="../css/admin.css" rel="stylesheet">
+    <link href="css/admin.css" rel="stylesheet">
 </head>
 <body>
 <%@ include file="admin-sidebar.jsp" %>
@@ -17,10 +19,11 @@
         <div class="row align-items-center">
             <div class="col-md-8">
                 <div class="input-group">
-          <span class="input-group-text">
-            <i class="fas fa-search"></i>
-          </span>
-                    <input type="search" class="form-control" placeholder="Search customers..." id="searchCustomerInput">
+                    <span class="input-group-text">
+                        <i class="fas fa-search"></i>
+                    </span>
+                    <input type="search" class="form-control" placeholder="Search customers..."
+                           id="searchCustomerInput">
                 </div>
             </div>
             <div class="col-md-4">
@@ -31,6 +34,12 @@
         </div>
     </div>
 
+    <%
+        List<CustomerDTO> customerList = (List<CustomerDTO>) request.getAttribute("customerList");
+        System.out.println("Customer List in JSP: " + (customerList != null ? customerList.size() : "null"));
+
+        if (customerList != null && !customerList.isEmpty()) {
+    %>
     <div class="table-responsive">
         <table class="table table-hover">
             <thead>
@@ -44,40 +53,30 @@
             </tr>
             </thead>
             <tbody id="customerTableBody">
-            <!-- Sample data -->
+            <% for (CustomerDTO customer : customerList) { %>
             <tr>
-                <td>C001</td>
-                <td>John Doe</td>
-                <td>123 Main St, New York</td>
-                <td>john.doe@example.com</td>
-                <td>+1 123-456-7890</td>
-                <td><img src="../images/customer1.jpg" alt="John Doe" style="width: 50px; height: 50px; border-radius: 50%;"></td>
+                <td><%= customer.getId() %></td>
+                <td><%= customer.getName() %></td>
+                <td><%= customer.getAddress() %></td>
+                <td><%= customer.getEmail() %></td>
+                <td><%= customer.getContact() %></td>
+                <td><img src="<%= customer.getImage() %>" alt="Customer Image" width="50" height="50"></td>
             </tr>
-            <tr>
-                <td>C002</td>
-                <td>Jane Smith</td>
-                <td>456 Elm St, Los Angeles</td>
-                <td>jane.smith@example.com</td>
-                <td>+1 987-654-3210</td>
-                <td><img src="../images/customer2.jpg" alt="Jane Smith" style="width: 50px; height: 50px; border-radius: 50%;"></td>
-            </tr>
-            <tr>
-                <td>C003</td>
-                <td>Alice Johnson</td>
-                <td>789 Oak St, Chicago</td>
-                <td>alice.johnson@example.com</td>
-                <td>+1 555-123-4567</td>
-                <td><img src="../images/customer3.jpg" alt="Alice Johnson" style="width: 50px; height: 50px; border-radius: 50%;"></td>
-            </tr>
+            <% } %>
             </tbody>
         </table>
     </div>
+    <% } else { %>
+    <div class="alert alert-warning" role="alert">
+        No customers found.
+    </div>
+    <% } %>
 </main>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script>
     // Search functionality
-    document.getElementById('searchCustomerButton').addEventListener('click', function() {
+    document.getElementById('searchCustomerButton').addEventListener('click', function () {
         const searchTerm = document.getElementById('searchCustomerInput').value.toLowerCase();
         const rows = document.getElementById('customerTableBody').getElementsByTagName('tr');
 
@@ -88,7 +87,7 @@
     });
 
     // Real-time search
-    document.getElementById('searchCustomerInput').addEventListener('input', function() {
+    document.getElementById('searchCustomerInput').addEventListener('input', function () {
         const searchTerm = this.value.toLowerCase();
         const rows = document.getElementById('customerTableBody').getElementsByTagName('tr');
 

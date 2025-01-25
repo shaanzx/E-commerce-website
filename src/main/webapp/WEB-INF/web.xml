@@ -3,4 +3,13 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee https://jakarta.ee/xml/ns/jakartaee/web-app_6_0.xsd"
          version="6.0">
+
+    <servlet>
+        <servlet-name>CustomerViewServlet</servlet-name>
+        <servlet-class>lk.ijse.ecommerce.CustomerViewServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>CustomerViewServlet</servlet-name>
+        <url-pattern>/customer-view-servlet</url-pattern>
+    </servlet-mapping>
 </web-app>

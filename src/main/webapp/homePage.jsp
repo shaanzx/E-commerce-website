@@ -482,7 +482,7 @@
             >
                 <img
                         id="headerProfileImage"
-                        src="../assets/shoes-hero.jpg"
+                        src="assets/shoes-hero.jpg"
                         alt="Profile"
                         class="rounded-circle header-profile-image"
                         style="width: 40px; height: 40px; object-fit: cover"
@@ -516,7 +516,7 @@
                     <!-- Left Column (Product Image and Details) -->
                     <div class="col-md-3">
                         <img
-                                src="../assets/shoes-hero.jpg"
+                                src="assets/shoes-hero.jpg"
                                 alt="Product Image"
                                 class="img-fluid mb-3"
                         />
@@ -798,7 +798,7 @@
         <div class="col-md-4">
             <div class="card product-card">
                 <img
-                        src="../assets/shoes-hero.jpg"
+                        src="assets/shoes-hero.jpg"
                         class="card-img-top"
                         alt="Product Image"
                 />
@@ -814,7 +814,7 @@
         <div class="col-md-4">
             <div class="card product-card">
                 <img
-                        src="../assets/shoes-hero.jpg"
+                        src="assets/shoes-hero.jpg"
                         class="card-img-top"
                         alt="Product Image"
                 />
@@ -828,7 +828,7 @@
         <div class="col-md-4">
             <div class="card product-card">
                 <img
-                        src="../assets/shoes-hero.jpg"
+                        src="assets/shoes-hero.jpg"
                         class="card-img-top"
                         alt="Product Image"
                 />
@@ -855,21 +855,21 @@
         <div class="carousel-inner">
             <div class="carousel-item active">
                 <img
-                        src="../assets/Image-1.png"
+                        src="assets/Image-1.png"
                         class="d-block w-100 rounded shadow"
                         alt="Image 1"
                 />
             </div>
             <div class="carousel-item">
                 <img
-                        src="../assets/image-3.png"
+                        src="assets/image-3.png"
                         class="d-block w-100 rounded shadow"
                         alt="Image 2"
                 />
             </div>
             <div class="carousel-item">
                 <img
-                        src="../assets/image-2.png"
+                        src="assets/image-2.png"
                         class="d-block w-100 rounded shadow"
                         alt="Image 3"
                 />
@@ -907,7 +907,7 @@
                     style="border: 2px solid #ccc; border-radius: 15px"
             >
                 <img
-                        src="../assets/shoes-hero.jpg"
+                        src="assets/shoes-hero.jpg"
                         class="card-img-top"
                         alt="Product Image"
                         style="border-bottom: 5px solid #ff5722"
@@ -938,7 +938,7 @@
                     style="border: 2px solid #ccc; border-radius: 15px"
             >
                 <img
-                        src="../assets/shoes-hero.jpg"
+                        src="assets/shoes-hero.jpg"
                         class="card-img-top"
                         alt="Product Image"
                         style="border-bottom: 5px solid #ff5722"
@@ -969,7 +969,7 @@
                     style="border: 2px solid #ccc; border-radius: 15px"
             >
                 <img
-                        src="../assets/shoes-hero.jpg"
+                        src="assets/shoes-hero.jpg"
                         class="card-img-top"
                         alt="Product Image"
                         style="border-bottom: 5px solid #ff5722"
@@ -1000,7 +1000,7 @@
                     style="border: 2px solid #ccc; border-radius: 15px"
             >
                 <img
-                        src="../assets/shoes-hero.jpg"
+                        src="assets/shoes-hero.jpg"
                         class="card-img-top"
                         alt="Product Image"
                         style="border-bottom: 5px solid #ff5722"
@@ -1038,7 +1038,7 @@
         <div class="col-md-3 mb-4">
             <div class="card product-card">
                 <img
-                        src="../assets/shoes-hero.jpg"
+                        src="assets/shoes-hero.jpg"
                         class="card-img-top product-img"
                         alt="Stylish Sneakers"
                 />
@@ -1052,7 +1052,7 @@
         <div class="col-md-3 mb-4">
             <div class="card product-card">
                 <img
-                        src="../assets/shoes-hero.jpg"
+                        src="assets/shoes-hero.jpg"
                         class="card-img-top product-img"
                         alt="Running Shoes"
                 />
@@ -1066,7 +1066,7 @@
         <div class="col-md-3 mb-4">
             <div class="card product-card">
                 <img
-                        src="../assets/shoes-hero.jpg"
+                        src="assets/shoes-hero.jpg"
                         class="card-img-top product-img"
                         alt="Leather Shoes"
                 />
@@ -1080,7 +1080,7 @@
         <div class="col-md-3 mb-4">
             <div class="card product-card">
                 <img
-                        src="../assets/shoes-hero.jpg"
+                        src="assets/shoes-hero.jpg"
                         class="card-img-top product-img"
                         alt="Casual Sneakers"
                 />

@@ -1,4 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,7 +8,7 @@
     <title>Category Management - Shoe Mart</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <link href="../css/admin.css" rel="stylesheet">
+    <link href="css/admin.css" rel="stylesheet">
 </head>
 <body>
 
@@ -23,25 +24,27 @@
             </h2>
             <div id="categoryForm" class="accordion-collapse collapse show">
                 <div class="accordion-body">
-                    <form id="categoryManagementForm" enctype="multipart/form-data">
+                    <form id="categoryManagementForm" action="${pageContext.request.contextPath}/category-servlet" method="post" enctype="multipart/form-data">
+                        <input type="hidden" name="action" value="${category == null ? 'create' : 'update'}">
+                        <input type="hidden" name="categoryCode" value="${category.categoryCode}">
                         <div class="row">
                             <div class="col-md-6 mb-3">
                                 <label class="form-label">Category Code</label>
-                                <input type="text" class="form-control" id="categoryCode" required>
+                                <input type="text" class="form-control" id="categoryCode" name="categoryCode" value="${category.categoryCode}" required>
                                 <div class="error-label">Category code is required (Format: C00-000)</div>
                             </div>
                             <div class="col-md-6 mb-3">
                                 <label class="form-label">Category Name</label>
-                                <input type="text" class="form-control" id="categoryName" required>
+                                <input type="text" class="form-control" id="categoryName" name="categoryName" value="${category.categoryName}" required>
                                 <div class="error-label">Category name is required (Min 3 characters)</div>
                             </div>
                             <div class="col-md-12 mb-3">
                                 <label class="form-label">Description</label>
-                                <textarea class="form-control" id="categoryDescription" rows="3"></textarea>
+                                <textarea class="form-control" id="categoryDescription" name="categoryDescription" rows="3">${category.description}</textarea>
                             </div>
                             <div class="col-md-12 mb-3">
                                 <label class="form-label">Category Image</label>
-                                <input type="file" class="form-control" id="categoryImage" accept="image/*" required>
+                                <input type="file" class="form-control" id="categoryImage" name="categoryImage" accept="image/*" required>
                                 <div class="error-label">Image is required (Only JPG, PNG, or GIF)</div>
                             </div>
                         </div>
@@ -103,35 +106,22 @@
             </tr>
             </thead>
             <tbody id="categoryTableBody">
-            <!-- Sample data -->
-            <tr>
-                <td>C00-001</td>
-                <td>Running</td>
-                <td>Best for running and jogging</td>
-                <td><img src="../images/running.jpg" alt="Running" style="width: 50px; height: 50px;"></td>
-                <td>
-                    <button class="btn btn-link text-primary" onclick="editCategory('C00-001')">
-                        <i class="fas fa-edit"></i>
-                    </button>
-                    <button class="btn-delete" onclick="deleteCategory('C00-001')">
-                        <i class="fas fa-trash"></i>
-                    </button>
-                </td>
-            </tr>
-            <tr>
-                <td>C00-002</td>
-                <td>Casual</td>
-                <td>Perfect for everyday wear</td>
-                <td><img src="../images/casual.jpg" alt="Casual" style="width: 50px; height: 50px;"></td>
-                <td>
-                    <button class="btn btn-link text-primary" onclick="editCategory('C00-002')">
-                        <i class="fas fa-edit"></i>
-                    </button>
-                    <button class="btn-delete" onclick="deleteCategory('C00-002')">
-                        <i class="fas fa-trash"></i>
-                    </button>
-                </td>
-            </tr>
+            <c:forEach var="category" items="${categories}">
+                <tr>
+                    <td>${category.categoryCode}</td>
+                    <td>${category.categoryName}</td>
+                    <td>${category.description}</td>
+                    <td><img src="${category.imageUrl}" alt="${category.categoryName}" style="width: 50px; height: 50px;"></td>
+                    <td>
+                        <a href="category-servlet?action=edit&categoryCode=${category.categoryCode}" class="btn btn-link text-primary">
+                            <i class="fas fa-edit"></i>
+                        </a>
+                        <a href="category-servlet?action=delete&categoryCode=${category.categoryCode}" class="btn btn-link text-danger">
+                            <i class="fas fa-trash"></i>
+                        </a>
+                    </td>
+                </tr>
+            </c:forEach>
             </tbody>
         </table>
     </div>
@@ -143,7 +133,7 @@
     document.getElementById('categoryManagementForm').addEventListener('submit', function(e) {
         e.preventDefault();
         if (validateCategoryForm()) {
-            saveCategory();
+            this.submit();
         }
     });
 
@@ -194,35 +184,6 @@
     document.querySelectorAll('input, select').forEach(input => {
         input.addEventListener('input', () => clearError(input));
     });
-
-    function saveCategory() {
-        const formData = new FormData();
-        formData.append('categoryCode', document.getElementById('categoryCode').value);
-        formData.append('categoryName', document.getElementById('categoryName').value);
-        formData.append('categoryDescription', document.getElementById('categoryDescription').value);
-        formData.append('categoryImage', document.getElementById('categoryImage').files[0]);
-
-        // Here you would typically make an AJAX call to save the data
-        console.log('Saving category:', formData);
-        alert('Category saved successfully!');
-        document.getElementById('categoryManagementForm').reset();
-    }
-
-    function editCategory(categoryCode) {
-        // Here you would typically fetch the category data and populate the form
-        console.log('Editing category:', categoryCode);
-        document.getElementById('categoryCode').value = categoryCode;
-        // Scroll to form
-        document.getElementById('categoryForm').scrollIntoView({ behavior: 'smooth' });
-    }
-
-    function deleteCategory(categoryCode) {
-        if (confirm('Are you sure you want to delete this category?')) {
-            // Here you would typically make an AJAX call to delete the category
-            console.log('Deleting category:', categoryCode);
-            alert(`Category ${categoryCode} deleted successfully!`);
-        }
-    }
 
     // Search functionality
     document.getElementById('searchCategoryButton').addEventListener('click', function() {

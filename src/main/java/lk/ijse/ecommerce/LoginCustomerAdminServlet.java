@@ -58,9 +58,9 @@ public class LoginCustomerAdminServlet extends HttpServlet {
 
                             // Redirect based on role (admin/customer)
                             if ("Admin".equals(role)) {
-                                resp.sendRedirect("pages/admin-Dashboard.jsp");
+                                resp.sendRedirect("admin-Dashboard.jsp");
                             } else {
-                                resp.sendRedirect("pages/homePage.jsp");
+                                resp.sendRedirect("homePage.jsp");
                             }
                         } else {
                             errorMessage = "Invalid email or password!";

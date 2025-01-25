@@ -53,14 +53,14 @@
                         </div>
 
                         <div class="mb-4">
-                            <a href="pages/homePage.jsp" class="gradient-button btn btn-lg w-100 text-white text-decoration-none">
+                            <a href="homePage.jsp" class="gradient-button btn btn-lg w-100 text-white text-decoration-none">
                                 Login
                             </a>
                         </div>
 
                         <div class="d-flex justify-content-between align-items-center mb-4">
                             <a href="forgot-password.jsp" class="link-purple">Forgot password?</a>
-                            <a href="pages/register.jsp" class="link-purple">Register here</a>
+                            <a href="register.jsp" class="link-purple">Register here</a>
                         </div>
 
                         <div class="text-center">

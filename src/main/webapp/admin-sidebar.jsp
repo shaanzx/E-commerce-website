@@ -115,7 +115,7 @@
             </a>
         </li>
         <li class="nav-item">
-            <a href="admin-customerView.jsp" class="nav-link <%= request.getRequestURI().endsWith("admin-customerView.jsp") ? "active" : "" %>">
+            <a href="customer-view-servlet" class="nav-link <%= request.getRequestURI().endsWith("admin-customerView.jsp") ? "active" : "" %>">
                 <i class="fas fa-users"></i>
                 Customers
             </a>
@@ -149,7 +149,7 @@
                 <p class="user-name">Admin User</p>
                 <p class="user-role">Administrator</p>
             </div>
-            <a href="../index.jsp" class="text-white">
+            <a href="index.jsp" class="text-white">
                 <i class="fas fa-sign-out-alt"></i>
             </a>
         </div>

@@ -7,7 +7,7 @@
     <title>Register - Shoe Mart</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <link href="../css/style.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
 </head>
 <style>
     .form-cart {
@@ -20,7 +20,7 @@
     <div class="card">
         <div class="row g-0">
             <div class="col-md-6 d-none d-md-block image-section position-relative">
-                <img src="../assets/login-image.jpeg" alt="registration form">
+                <img src="assets/login-image.jpeg" alt="registration form">
                 <div class="image-overlay position-absolute text-white d-flex flex-column justify-content-center align-items-center">
                     <h2 class="on-text fw-bold text-center px-3">Join us to find your perfect pair</h2>
                 </div>
@@ -100,7 +100,7 @@
 
                         <div class="text-center mb-4">
                             <p class="mb-0">Already have an account?
-                                <a href="../login.jsp" class="link-purple">Login here</a>
+                                <a href="login.jsp" class="link-purple">Login here</a>
                             </p>
                         </div>
 
@@ -119,6 +119,6 @@
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-<script src="../js/scripts.js"></script>
+<script src="js/scripts.js"></script>
 </body>
 </html>

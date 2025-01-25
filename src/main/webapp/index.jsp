@@ -60,7 +60,7 @@
 
                         <div class="d-flex justify-content-between align-items-center mb-4">
                             <a href="forgot-password.jsp" class="link-purple">Forgot password?</a>
-                            <a href="pages/register.jsp" class="link-purple">Register here</a>
+                            <a href="register.jsp" class="link-purple">Register here</a>
                         </div>
 
                         <div class="text-center">
