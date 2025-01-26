@@ -7,15 +7,14 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.Part;
-import lk.ijse.ecommerce.dto.ProductDTO;
 
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.sql.DataSource;
 import java.io.IOException;
+import java.io.InputStream;
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Base64;
 
 @WebServlet(name = "ProductServlet", value = "/product")
 @MultipartConfig(
@@ -42,9 +41,10 @@ public class ProductServlet extends HttpServlet {
 
         if (action == null) {
             loadProducts(req, resp);
-            req.getRequestDispatcher("admin-ItemManagement.jsp").forward(req, resp);
         } else if ("generateId".equals(action)) {
             generateNextProductId(req, resp);
+        } else if ("loadCategories".equals(action)) {
+            loadCategories(req, resp);
         }
     }
 
@@ -65,26 +65,56 @@ public class ProductServlet extends HttpServlet {
         }
     }
 
-    private void loadProducts(HttpServletRequest req, HttpServletResponse resp) throws ServletException {
+    private void loadCategories(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         try {
-            List<ProductDTO> products = new ArrayList<>();
-            String query = "SELECT * FROM products";
+            String query = "SELECT id, name FROM category";
             try (Statement stmt = connection.createStatement();
                  ResultSet rs = stmt.executeQuery(query)) {
 
+                StringBuilder options = new StringBuilder();
                 while (rs.next()) {
-                    ProductDTO product = new ProductDTO(
-                            rs.getString("itemCode"),
-                            rs.getString("name"),
-                            rs.getDouble("unitPrice"),
-                            rs.getInt("qtyOnHand"),
-                            rs.getString("categoryId"),
-                            rs.getString("productImage")
-                    );
-                    products.add(product);
+                    options.append("<option value='").append(rs.getString("id")).append("'>")
+                            .append(rs.getString("name")).append("</option>");
                 }
+
+                resp.setContentType("text/html");
+                resp.getWriter().write(options.toString());
             }
-            req.setAttribute("products", products);
+        } catch (SQLException e) {
+            throw new ServletException("Error loading categories", e);
+        }
+    }
+
+    private void loadProducts(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        try {
+            String query = "SELECT p.itemCode, p.name, p.unitPrice, p.qtyOnHand, c.name AS categoryName, p.productImage " +
+                    "FROM products p " +
+                    "JOIN category c ON p.categoryId = c.id";
+            try (Statement stmt = connection.createStatement();
+                 ResultSet rs = stmt.executeQuery(query)) {
+
+                StringBuilder html = new StringBuilder();
+                while (rs.next()) {
+                    byte[] imageBytes = rs.getBytes("productImage");
+                    String base64Image = imageBytes != null ? Base64.getEncoder().encodeToString(imageBytes) : "";
+
+                    html.append("<tr>")
+                            .append("<td>").append(rs.getString("itemCode")).append("</td>")
+                            .append("<td>").append(rs.getString("name")).append("</td>")
+                            .append("<td>").append(rs.getDouble("unitPrice")).append("</td>")
+                            .append("<td>").append(rs.getInt("qtyOnHand")).append("</td>")
+                            .append("<td>").append(rs.getString("categoryName")).append("</td>")
+                            .append("<td><img src='data:image/jpeg;base64,").append(base64Image).append("' style='width:50px;height:50px;'></td>")
+                            .append("<td>")
+                            .append("<button onclick='editProduct(\"").append(rs.getString("itemCode")).append("\", \"").append(rs.getString("name")).append("\", ").append(rs.getDouble("unitPrice")).append(", ").append(rs.getInt("qtyOnHand")).append(", \"").append(rs.getString("categoryName")).append("\")' class='btn btn-sm btn-warning'>Edit</button>")
+                            .append("<button onclick='deleteProduct(\"").append(rs.getString("itemCode")).append("\")' class='btn btn-sm btn-danger'>Delete</button>")
+                            .append("</td>")
+                            .append("</tr>");
+                }
+
+                resp.setContentType("text/html");
+                resp.getWriter().write(html.toString());
+            }
         } catch (SQLException e) {
             throw new ServletException("Error loading products", e);
         }
@@ -116,13 +146,9 @@ public class ProductServlet extends HttpServlet {
         String name = req.getParameter("itemName");
         double price = Double.parseDouble(req.getParameter("unitPrice"));
         int quantity = Integer.parseInt(req.getParameter("qtyOnHand"));
-        int categoryId = Integer.parseInt(req.getParameter("category"));
+        String categoryId = req.getParameter("category");
         Part filePart = req.getPart("itemImage");
-        String fileName = getSubmittedFileName(filePart);
-        String uploadPath = getServletContext().getRealPath("/uploads/");
-        filePart.write(uploadPath + fileName);
-
-        System.out.println(id+name+price+quantity+categoryId+fileName);
+        InputStream fileContent = filePart != null ? filePart.getInputStream() : null;
 
         try {
             String query = "INSERT INTO products (itemCode, name, unitPrice, qtyOnHand, categoryId, productImage) VALUES (?, ?, ?, ?, ?, ?)";
@@ -131,70 +157,87 @@ public class ProductServlet extends HttpServlet {
                 pstmt.setString(2, name);
                 pstmt.setDouble(3, price);
                 pstmt.setInt(4, quantity);
-                pstmt.setInt(5, categoryId);
-                pstmt.setString(6, "uploads/" + fileName);
+                pstmt.setString(5, categoryId);
 
-
+                // Set the image as a BLOB
+                if (fileContent != null) {
+                    pstmt.setBinaryStream(6, fileContent, filePart.getSize());
+                } else {
+                    pstmt.setNull(6, Types.BLOB); // Handle NULL images
+                }
 
                 int affectedRows = pstmt.executeUpdate();
                 if (affectedRows > 0) {
-                    resp.sendRedirect("product?success=save");
+                    resp.getWriter().write("Product saved successfully");
                 } else {
-                    resp.sendRedirect("product?error=save");
+                    resp.getWriter().write("Error saving product");
                 }
             }
         } catch (SQLException e) {
             throw new ServletException("Save product error", e);
+        } finally {
+            if (fileContent != null) fileContent.close();
         }
     }
 
     private void updateProduct(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String id = req.getParameter("itemCode");
+        String name = req.getParameter("itemName");
+        double price = Double.parseDouble(req.getParameter("unitPrice"));
+        int quantity = Integer.parseInt(req.getParameter("qtyOnHand"));
+        String categoryId = req.getParameter("category");
+        Part filePart = req.getPart("itemImage");
+        InputStream fileContent = filePart != null ? filePart.getInputStream() : null;
+
         try {
-            String query = "UPDATE products SET name=?, unitPrice=?, qtyOnHand=?, categoryId=? WHERE itemCode=?";
+            String query = "UPDATE products SET name=?, unitPrice=?, qtyOnHand=?, categoryId=?, productImage=? WHERE itemCode=?";
             try (PreparedStatement pstmt = connection.prepareStatement(query)) {
-                pstmt.setString(1, req.getParameter("itemName"));
-                pstmt.setDouble(2, Double.parseDouble(req.getParameter("unitPrice")));
-                pstmt.setInt(3, Integer.parseInt(req.getParameter("qtyOnHand")));
-                pstmt.setString(4, req.getParameter("category"));
-                pstmt.setInt(5, Integer.parseInt(req.getParameter("itemCode")));
+                pstmt.setString(1, name);
+                pstmt.setDouble(2, price);
+                pstmt.setInt(3, quantity);
+                pstmt.setString(4, categoryId);
+
+                // Set the image as a BLOB
+                if (fileContent != null) {
+                    pstmt.setBinaryStream(5, fileContent, filePart.getSize());
+                } else {
+                    pstmt.setNull(5, Types.BLOB); // Handle NULL images
+                }
+
+                pstmt.setString(6, id);
 
                 int affectedRows = pstmt.executeUpdate();
                 if (affectedRows > 0) {
-                    resp.sendRedirect("product?success=update");
+                    resp.getWriter().write("Product updated successfully");
                 } else {
-                    resp.sendRedirect("product?error=update");
+                    resp.getWriter().write("Error updating product");
                 }
             }
         } catch (SQLException e) {
             throw new ServletException("Update product error", e);
+        } finally {
+            if (fileContent != null) fileContent.close();
         }
     }
 
     private void deleteProduct(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String id = req.getParameter("itemCode");
+
         try {
             String query = "DELETE FROM products WHERE itemCode=?";
             try (PreparedStatement pstmt = connection.prepareStatement(query)) {
-                pstmt.setString(1, req.getParameter("itemCode"));
+                pstmt.setString(1, id);
 
                 int affectedRows = pstmt.executeUpdate();
                 if (affectedRows > 0) {
-                    resp.sendRedirect("product?success=delete");
+                    resp.getWriter().write("Product deleted successfully");
                 } else {
-                    resp.sendRedirect("product?error=delete");
+                    resp.getWriter().write("Error deleting product");
                 }
             }
         } catch (SQLException e) {
             throw new ServletException("Delete product error", e);
         }
-    }
-
-    private String getSubmittedFileName(Part part) {
-        for (String content : part.getHeader("content-disposition").split(";")) {
-            if (content.trim().startsWith("filename")) {
-                return content.substring(content.indexOf('=') + 1).trim().replace("\"", "");
-            }
-        }
-        return null;
     }
 
     @Override

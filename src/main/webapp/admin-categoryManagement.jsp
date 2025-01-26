@@ -24,28 +24,23 @@
             </h2>
             <div id="categoryForm" class="accordion-collapse collapse show">
                 <div class="accordion-body">
-                    <form id="categoryManagementForm" action="${pageContext.request.contextPath}/category-servlet" method="post" enctype="multipart/form-data">
-                        <input type="hidden" name="action" value="${category == null ? 'create' : 'update'}">
-                        <input type="hidden" name="categoryCode" value="${category != null ? category.id : ''}">
+                    <form id="categoryManagementForm">
+                        <input type="hidden" name="action" id="action" value="create">
+                        <input type="hidden" name="categoryCode" id="categoryCode" value="">
                         <div class="row">
                             <div class="col-md-6 mb-3">
                                 <label class="form-label">Category Name</label>
-                                <input type="text" class="form-control" id="categoryName" name="categoryName" value="${category != null ? category.name : ''}" required>
+                                <input type="text" class="form-control" id="categoryName" name="categoryName" required>
                                 <div class="error-label" style="display:none;">Category name is required (Min 3 characters)</div>
                             </div>
                             <div class="col-md-12 mb-3">
                                 <label class="form-label">Description</label>
-                                <textarea class="form-control" id="categoryDescription" name="categoryDescription" rows="3">${category != null ? category.description : ''}</textarea>
-                            </div>
-                            <div class="col-md-12 mb-3">
-                                <label class="form-label">Category Image</label>
-                                <input type="file" class="form-control" id="categoryImage" name="categoryImage" accept="image/*" required>
-                                <div class="error-label" style="display:none;">Image is required (Only JPG, PNG, or GIF)</div>
+                                <textarea class="form-control" id="categoryDescription" name="categoryDescription" rows="3"></textarea>
                             </div>
                         </div>
                         <div class="row mt-3">
                             <div class="col-md-3 mb-2">
-                                <button type="submit" class="btn btn-primary w-100">
+                                <button type="button" class="btn btn-primary w-100" id="btnSaveCategory">
                                     <i class="fas fa-save me-2"></i>Save
                                 </button>
                             </div>
@@ -96,7 +91,6 @@
                 <th>Category Code</th>
                 <th>Name</th>
                 <th>Description</th>
-                <th>Image</th>
                 <th>Actions</th>
             </tr>
             </thead>
@@ -106,14 +100,13 @@
                     <td>${category.id}</td>
                     <td>${category.name}</td>
                     <td>${category.description}</td>
-                    <td><img src="${category.image}" alt="${category.name}" style="width: 50px; height: 50px;"></td>
                     <td>
-                        <a href="category-servlet?action=edit&categoryCode=${category.id}" class="btn btn-link text-primary">
+                        <button class="btn btn-link text-primary" onclick="editCategory('${category.id}')">
                             <i class="fas fa-edit"></i>
-                        </a>
-                        <a href="category-servlet?action=delete&categoryCode=${category.id}" class="btn btn-link text-danger">
+                        </button>
+                        <button class="btn btn-link text-danger" onclick="deleteCategory('${category.id}')">
                             <i class="fas fa-trash"></i>
-                        </a>
+                        </button>
                     </td>
                 </tr>
             </c:forEach>
@@ -123,77 +116,126 @@
 </main>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
-    // Form validation
-    document.getElementById('categoryManagementForm').addEventListener('submit', function(e) {
-        e.preventDefault();
-        if (validateCategoryForm()) {
-            this.submit();
-        }
+    $(document).ready(function() {
+        loadCategories();
+
+        $('#btnSaveCategory').click(function() {
+            saveCategory();
+        });
+
+        $('#btnUpdateCategory').click(function() {
+            updateCategory();
+        });
+
+        $('#btnDeleteCategory').click(function() {
+            deleteCategory($('#categoryCode').val());
+        });
+
+        $('#searchCategoryButton').click(function() {
+            searchCategory();
+        });
+
+        $('#searchCategoryInput').on('input', function() {
+            searchCategory();
+        });
     });
 
-    function validateCategoryForm() {
-        let isValid = true;
-
-        // Category name validation (min 3 chars)
-        const categoryName = document.getElementById('categoryName');
-        if (categoryName.value.length < 3) {
-            showError(categoryName);
-            isValid = false;
-        }
-
-        // Image validation
-        const categoryImage = document.getElementById('categoryImage');
-        if (!categoryImage.files || categoryImage.files.length === 0) {
-            showError(categoryImage);
-            isValid = false;
-        }
-
-        return isValid;
+    function loadCategories() {
+        $.ajax({
+            url: 'category-servlet',
+            type: 'GET',
+            data: { action: 'load' },
+            success: function(data) {
+                $('#categoryTableBody').html(data);
+            }
+        });
     }
 
-    function showError(input) {
-        input.classList.add('is-invalid');
-        const errorLabel = input.nextElementSibling;
-        if (errorLabel && errorLabel.classList.contains('error-label')) {
-            errorLabel.style.display = 'block';
+    function saveCategory() {
+        const categoryData = {
+            action: $('#action').val(),
+            categoryCode: $('#categoryCode').val(),
+            categoryName: $('#categoryName').val(),
+            categoryDescription: $('#categoryDescription').val()
+        };
+
+        $.ajax({
+            url: 'category-servlet',
+            type: 'POST',
+            data: categoryData,
+            success: function(response) {
+                alert(response);
+                loadCategories();
+                clearForm();
+            }
+        });
+    }
+
+    function updateCategory() {
+        const categoryData = {
+            action: 'update',
+            categoryCode: $('#categoryCode').val(),
+            categoryName: $('#categoryName').val(),
+            categoryDescription: $('#categoryDescription').val()
+        };
+
+        $.ajax({
+            url: 'category-servlet',
+            type: 'POST',
+            data: categoryData,
+            success: function(response) {
+                alert(response);
+                loadCategories();
+                clearForm();
+            }
+        });
+    }
+
+    function deleteCategory(categoryCode) {
+        if (confirm('Are you sure you want to delete this category?')) {
+            $.ajax({
+                url: 'category-servlet',
+                type: 'GET',
+                data: { action: 'delete', categoryCode: categoryCode },
+                success: function(response) {
+                    alert(response);
+                    loadCategories();
+                }
+            });
         }
     }
 
-    function clearError(input) {
-        input.classList.remove('is-invalid');
-        const errorLabel = input.nextElementSibling;
-        if (errorLabel && errorLabel.classList.contains('error-label')) {
-            errorLabel.style.display = 'none';
-        }
+    function editCategory(categoryCode) {
+        $.ajax({
+            url: 'category-servlet',
+            type: 'GET',
+            data: { action: 'edit', categoryCode: categoryCode },
+            success: function(category) {
+                $('#action').val('update');
+                $('#categoryCode').val(category.id);
+                $('#categoryName').val(category.name);
+                $('#categoryDescription').val(category.description);
+            }
+        });
     }
 
-    // Clear errors on input
-    document.querySelectorAll('input, select').forEach(input => {
-        input.addEventListener('input', () => clearError(input));
-    });
+    function searchCategory() {
+        const searchTerm = $('#searchCategoryInput').val().toLowerCase();
+        const rows = $('#categoryTableBody tr');
 
-    // Search functionality
-    document.getElementById('searchCategoryButton').addEventListener('click', function() {
-        const searchTerm = document.getElementById('searchCategoryInput').value.toLowerCase();
-        const rows = document.getElementById('categoryTableBody').getElementsByTagName('tr');
+        rows.each(function() {
+            const text = $(this).text().toLowerCase();
+            $(this).toggle(text.includes(searchTerm));
+        });
+    }
 
-        for (let row of rows) {
-            const text = row.textContent.toLowerCase();
-            row.style.display = text.includes(searchTerm) ? '' : 'none';
-        }
-    });
-
-    // Real-time search
-    document.getElementById('searchCategoryInput').addEventListener('input', function() {
-        const searchTerm = this.value.toLowerCase();
-        const rows = document.getElementById('categoryTableBody').getElementsByTagName('tr');
-
-        for (let row of rows) {
-            const text = row.textContent.toLowerCase();
-            row.style.display = text.includes(searchTerm) ? '' : 'none';
-        }
-    });
+    function clearForm() {
+        $('#categoryManagementForm')[0].reset();
+        $('#action').val('create');
+        $('#categoryCode').val('');
+    }
 </script>
 </body>
 </html>

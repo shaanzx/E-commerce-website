@@ -9,33 +9,26 @@
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
   <link href="css/admin.css" rel="stylesheet">
 </head>
-  <style>
-    h2, label{
-      color: white;
-    }
-  </style>
+<style>
+  h2,label{
+    color: white;
+  }
+</style>
 <body>
 <%@ include file="admin-sidebar.jsp" %>
 <div class="container mt-5">
   <h2>Product Management</h2>
 
-  <c:if test="${param.success eq 'save'}">
-    <div class="alert alert-success">Product saved successfully!</div>
-  </c:if>
-  <c:if test="${param.success eq 'update'}">
-    <div class="alert alert-success">Product updated successfully!</div>
-  </c:if>
-  <c:if test="${param.success eq 'delete'}">
-    <div class="alert alert-success">Product deleted successfully!</div>
-  </c:if>
+  <div id="message" class="alert" style="display: none;"></div>
 
-  <form id="productForm" action="/E_commerce_war_exploded/product" method="post" enctype="multipart/form-data">
+  <form id="productForm" enctype="multipart/form-data">
     <input type="hidden" name="action" id="formAction" value="save">
+    <input type="hidden" name="itemCode" id="itemCode">
 
     <div class="row">
       <div class="col-md-6">
         <label>Item Code</label>
-        <input type="text" class="form-control" id="itemCode" name="itemCode" readonly>
+        <input type="text" class="form-control" id="itemCodeDisplay" readonly>
       </div>
       <div class="col-md-6">
         <label>Product Name</label>
@@ -54,10 +47,9 @@
       </div>
       <div class="col-md-4">
         <label>Category</label>
-        <select class="form-control" name="category" required>
-          <option value="Running">1</option>
-          <option value="Casual">2</option>
-          <option value="Sports">3</option>
+        <select class="form-control" name="category" id="category" required>
+          <option value="">Select Category</option>
+          <!-- Categories will be loaded dynamically via AJAX -->
         </select>
       </div>
     </div>
@@ -70,7 +62,7 @@
     </div>
 
     <div class="mt-3">
-      <button type="submit" class="btn btn-primary me-2">Save</button>
+      <button type="button" class="btn btn-primary me-2" id="btnSave">Save</button>
       <button type="button" class="btn btn-secondary" onclick="resetForm()">Clear</button>
     </div>
   </form>
@@ -87,7 +79,7 @@
       <th>Actions</th>
     </tr>
     </thead>
-    <tbody>
+    <tbody id="productTableBody">
     <c:forEach var="product" items="${products}">
       <tr>
         <td>${product.id}</td>
@@ -107,41 +99,110 @@
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
-  document.addEventListener('DOMContentLoaded', function() {
+  $(document).ready(function() {
     fetchNextProductId();
+    loadCategories(); // Load categories into the combo box
+    loadProducts(); // Load products into the table
+
+    $('#btnSave').click(function() {
+      saveOrUpdateProduct();
+    });
   });
 
   function fetchNextProductId() {
-    fetch('product?action=generateId')
-            .then(response => response.text())
-            .then(id => {
-              document.getElementById('itemCode').value = id;
-            });
+    $.ajax({
+      url: 'product',
+      type: 'GET',
+      data: { action: 'generateId' },
+      success: function(id) {
+        $('#itemCode').val(id);
+        $('#itemCodeDisplay').val(id);
+      },
+      error: function(xhr) {
+        console.error("Error fetching next product ID:", xhr.responseText);
+      }
+    });
+  }
+
+  function loadCategories() {
+    $.ajax({
+      url: 'product',
+      type: 'GET',
+      data: { action: 'loadCategories' },
+      success: function(data) {
+        $('#category').html(data); // Populate the combo box with categories
+      },
+      error: function(xhr) {
+        console.error("Error loading categories:", xhr.responseText);
+      }
+    });
+  }
+
+  function loadProducts() {
+    $.ajax({
+      url: 'product',
+      type: 'GET',
+      success: function(data) {
+        $('#productTableBody').html(data);
+      },
+      error: function(xhr) {
+        console.error("Error loading products:", xhr.responseText);
+      }
+    });
+  }
+
+  function saveOrUpdateProduct() {
+    const formData = new FormData($('#productForm')[0]);
+
+    $.ajax({
+      url: 'product',
+      type: 'POST',
+      data: formData,
+      processData: false,
+      contentType: false,
+      success: function(response) {
+        $('#message').text(response).removeClass('alert-danger').addClass('alert-success').show();
+        loadProducts();
+        resetForm();
+      },
+      error: function(xhr) {
+        $('#message').text(xhr.responseText).removeClass('alert-success').addClass('alert-danger').show();
+      }
+    });
   }
 
   function editProduct(id, name, price, quantity, category) {
-    document.querySelector('input[name="itemCode"]').value = id;
-    document.querySelector('input[name="itemName"]').value = name;
-    document.querySelector('input[name="unitPrice"]').value = price;
-    document.querySelector('input[name="qtyOnHand"]').value = quantity;
-    document.querySelector('select[name="category"]').value = category;
-
-    document.getElementById('formAction').value = 'update';
+    $('#itemCode').val(id);
+    $('#itemCodeDisplay').val(id);
+    $('input[name="itemName"]').val(name);
+    $('input[name="unitPrice"]').val(price);
+    $('input[name="qtyOnHand"]').val(quantity);
+    $('#category').val(category);
+    $('#formAction').val('update');
   }
 
   function deleteProduct(id) {
     if (confirm('Are you sure you want to delete this product?')) {
-      const form = document.getElementById('productForm');
-      document.getElementById('formAction').value = 'delete';
-      document.querySelector('input[name="itemCode"]').value = id;
-      form.submit();
+      $.ajax({
+        url: 'product',
+        type: 'POST',
+        data: { action: 'delete', itemCode: id },
+        success: function(response) {
+          $('#message').text(response).removeClass('alert-danger').addClass('alert-success').show();
+          loadProducts();
+        },
+        error: function(xhr) {
+          $('#message').text(xhr.responseText).removeClass('alert-success').addClass('alert-danger').show();
+        }
+      });
     }
   }
 
   function resetForm() {
-    document.getElementById('productForm').reset();
-    document.getElementById('formAction').value = 'save';
+    $('#productForm')[0].reset();
+    $('#formAction').val('save');
     fetchNextProductId();
   }
 </script>

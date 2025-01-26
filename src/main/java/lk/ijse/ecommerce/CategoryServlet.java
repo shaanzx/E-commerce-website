@@ -12,6 +12,7 @@ import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -44,8 +45,6 @@ public class CategoryServlet extends HttpServlet {
             editCategory(request, response);
         } else if ("delete".equals(action)) {
             deleteCategory(request, response);
-        } else {
-            loadCategories(request, response);
         }
     }
 
@@ -71,14 +70,26 @@ public class CategoryServlet extends HttpServlet {
                 CategoryDTO category = new CategoryDTO(
                         rs.getString("id"),
                         rs.getString("name"),
-                        rs.getString("description"),
-                        rs.getString("image")
+                        rs.getString("description")
                 );
                 categories.add(category);
             }
 
-            request.setAttribute("categories", categories);
-            request.getRequestDispatcher("admin-categoryManagement.jsp").forward(request, response);
+            StringBuilder html = new StringBuilder();
+            for (CategoryDTO category : categories) {
+                html.append("<tr>")
+                        .append("<td>").append(category.getId()).append("</td>")
+                        .append("<td>").append(category.getName()).append("</td>")
+                        .append("<td>").append(category.getDescription()).append("</td>")
+                        .append("<td>")
+                        .append("<button class='btn btn-link text-primary' onclick='editCategory(\"").append(category.getId()).append("\")'><i class='fas fa-edit'></i></button>")
+                        .append("<button class='btn btn-link text-danger' onclick='deleteCategory(\"").append(category.getId()).append("\")'><i class='fas fa-trash'></i></button>")
+                        .append("</td>")
+                        .append("</tr>");
+            }
+
+            response.setContentType("text/html");
+            response.getWriter().write(html.toString());
 
         } catch (SQLException e) {
             throw new ServletException("Error loading categories", e);
@@ -88,16 +99,14 @@ public class CategoryServlet extends HttpServlet {
     private void createCategory(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String categoryName = request.getParameter("categoryName");
         String description = request.getParameter("categoryDescription");
-        String imageUrl = request.getParameter("categoryImage"); // Assume this is the path to the image
 
         try (Connection connection = dataSource.getConnection();
-             PreparedStatement ps = connection.prepareStatement("INSERT INTO category (name, description, image) VALUES (?, ?, ?)")) {
+             PreparedStatement ps = connection.prepareStatement("INSERT INTO category (name, description) VALUES (?, ?)")) {
             ps.setString(1, categoryName);
             ps.setString(2, description);
-            ps.setString(3, imageUrl);
             ps.executeUpdate();
 
-            response.sendRedirect("category-servlet?action=load");
+            response.getWriter().write("Category created successfully");
 
         } catch (SQLException e) {
             throw new ServletException("Error creating category", e);
@@ -117,12 +126,11 @@ public class CategoryServlet extends HttpServlet {
                 CategoryDTO category = new CategoryDTO(
                         rs.getString("id"),
                         rs.getString("name"),
-                        rs.getString("description"),
-                        rs.getString("image")
+                        rs.getString("description")
                 );
 
-                request.setAttribute("category", category);
-                request.getRequestDispatcher("admin-categoryManagement.jsp").forward(request, response);
+                response.setContentType("application/json");
+                response.getWriter().write("{\"id\":\"" + category.getId() + "\",\"name\":\"" + category.getName() + "\",\"description\":\"" + category.getDescription() + "\"}");
             }
 
         } catch (SQLException e) {
@@ -134,18 +142,16 @@ public class CategoryServlet extends HttpServlet {
         String categoryCode = request.getParameter("categoryCode");
         String categoryName = request.getParameter("categoryName");
         String description = request.getParameter("categoryDescription");
-        String imageUrl = request.getParameter("categoryImage");
 
         try (Connection connection = dataSource.getConnection();
-             PreparedStatement ps = connection.prepareStatement("UPDATE category SET name = ?, description = ?, image = ? WHERE id = ?")) {
+             PreparedStatement ps = connection.prepareStatement("UPDATE category SET name = ?, description = ? WHERE id = ?")) {
 
             ps.setString(1, categoryName);
             ps.setString(2, description);
-            ps.setString(3, imageUrl);
-            ps.setString(4, categoryCode);
+            ps.setString(3, categoryCode);
             ps.executeUpdate();
 
-            response.sendRedirect("admin-categoryManagement.jsp?action=load");
+            response.getWriter().write("Category updated successfully");
 
         } catch (SQLException e) {
             throw new ServletException("Error updating category", e);
@@ -161,7 +167,7 @@ public class CategoryServlet extends HttpServlet {
             ps.setString(1, categoryCode);
             ps.executeUpdate();
 
-            response.sendRedirect("admin-categoryManagement.jsp?action=load");
+            response.getWriter().write("Category deleted successfully");
 
         } catch (SQLException e) {
             throw new ServletException("Error deleting category", e);
