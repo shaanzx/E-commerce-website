@@ -1,9 +1,9 @@
- <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Shopping Cart - Shoe Mart</title>
+    <title>Shopping Cart - Stepz With Shanz</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
@@ -23,6 +23,7 @@
             background-color: var(--light-bg);
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
+
         .header {
             background-color: #f8f9fa;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -237,34 +238,42 @@
             --primary: #8b31ff;
             --primary-dark: #6b24c2;
         }
+
         .bg-primary-gradient {
             background: linear-gradient(45deg, var(--primary), var(--primary-dark));
         }
+
         .btn-primary {
             background-color: var(--primary);
             border-color: var(--primary);
         }
+
         .btn-primary:hover {
             background-color: var(--primary-dark);
             border-color: var(--primary-dark);
         }
+
         .text-primary {
             color: var(--primary) !important;
         }
+
         .footer-link {
             color: #ffffff;
             text-decoration: none;
             transition: color 0.3s ease;
         }
+
         .footer-link:hover {
             color: rgba(255, 255, 255, 0.8);
         }
+
         .social-icon {
             font-size: 1.5rem;
             margin-right: 1rem;
             color: #ffffff;
             transition: color 0.3s ease;
         }
+
         .social-icon:hover {
             color: var(--primary);
         }
@@ -280,12 +289,12 @@
             </button>
             <a class="navbar-brand" href="#">
                 <i class="fas fa-cubes fa-2x me-3"></i>
-                <span class="h2 fw-bold mb-0">SHOE MART</span>
+                <span class="h2 fw-bold mb-0">Stepz With Shanz</span>
             </a>
             <div class="collapse navbar-collapse" id="navbarExample">
                 <ul class="navbar-nav me-auto mb-0">
                     <li class="nav-item">
-                        <a class="nav-link active" href="#">Home</a>
+                        <a class="nav-link active" href="homePage.jsp">Home</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#">New Arrivals</a>
@@ -319,7 +328,9 @@
             <div class="cart-item">
                 <div class="row">
                     <div class="col-md-5">
-                        <img src="assets/shoes-hero.jpg" alt="Nike Air Max 270" class="cart-item-image">
+                        <img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=800&auto=format&fit=crop&q=80"
+                             alt="Nike Air Max 270"
+                             class="cart-item-image">
                     </div>
                     <div class="col-md-7">
                         <h2 class="product-title">Nike Air Max 270</h2>
@@ -393,7 +404,8 @@
         <div class="row">
             <div class="col-lg-4 mb-4 mb-lg-0">
                 <h5 class="mb-3">About Us</h5>
-                <p>We are passionate about delivering high-quality products and exceptional customer service. Our mission is to provide innovative solutions that enhance your everyday life.</p>
+                <p>We are passionate about delivering high-quality products and exceptional customer service. Our
+                    mission is to provide innovative solutions that enhance your everyday life.</p>
             </div>
             <div class="col-lg-2 col-md-6 mb-4 mb-lg-0">
                 <h5 class="mb-3">Quick Links</h5>
@@ -445,7 +457,7 @@
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
+    document.addEventListener('DOMContentLoaded', function () {
         const quantityInput = document.getElementById('quantity');
         const subtotalElement = document.getElementById('subtotal');
         const taxElement = document.getElementById('tax');
@@ -464,21 +476,21 @@
             totalElement.textContent = `$${total.toFixed(2)}`;
         }
 
-        document.getElementById('decreaseQuantity').addEventListener('click', function() {
+        document.getElementById('decreaseQuantity').addEventListener('click', function () {
             if (quantityInput.value > 1) {
                 quantityInput.value = parseInt(quantityInput.value) - 1;
                 updateTotals();
             }
         });
 
-        document.getElementById('increaseQuantity').addEventListener('click', function() {
+        document.getElementById('increaseQuantity').addEventListener('click', function () {
             quantityInput.value = parseInt(quantityInput.value) + 1;
             updateTotals();
         });
 
         quantityInput.addEventListener('change', updateTotals);
 
-        document.querySelector('.checkout-btn').addEventListener('click', function() {
+        document.querySelector('.checkout-btn').addEventListener('click', function () {
             alert('Proceeding to checkout...');
         });
     });

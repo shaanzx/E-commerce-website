@@ -124,7 +124,6 @@
 </head>
 <body>
 <%@ include file="admin-sidebar.jsp" %>
-class="nav-link <%= request.getRequestURI().endsWith("admin-Dashboard.jsp") ? "active" : "" %>"
 
 <!-- Main Content -->
 <div class="main-content">

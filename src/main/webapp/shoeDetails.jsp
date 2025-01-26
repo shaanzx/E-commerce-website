@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Shoe Details - Shoe Mart</title>
+    <title>Shoe Details - Stepz With Shanz</title>
     <link
             href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
             rel="stylesheet"
@@ -270,7 +270,7 @@
             </button>
             <a class="navbar-brand" href="#">
                 <i class="fas fa-cubes fa-2x me-3"></i>
-                <span class="h2 fw-bold mb-0">SHOE MART</span>
+                <span class="h2 fw-bold mb-0">Stepz With Shanz</span>
             </a>
             <div class="collapse navbar-collapse" id="navbarExample">
                 <ul class="navbar-nav me-auto mb-0">
@@ -308,28 +308,28 @@
         <div class="col-lg-6">
             <div class="product-gallery">
                 <img
-                        src="/api/placeholder/600/600"
-                        alt="Nike Air Max 270"
-                        class="main-image"
+                        src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=800&auto=format&fit=crop&q=80"
+                        class="card-img-top"
+                        alt="Red Nike Sneakers"
                 />
                 <div class="thumbnail-container">
                     <img
-                            src="/api/placeholder/80/80"
+                            src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=800&auto=format&fit=crop&q=80"
                             alt="Thumbnail 1"
                             class="thumbnail active"
                     />
                     <img
-                            src="/api/placeholder/80/80"
+                            src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=800&auto=format&fit=crop&q=80"
                             alt="Thumbnail 2"
                             class="thumbnail"
                     />
                     <img
-                            src="/api/placeholder/80/80"
+                            src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=800&auto=format&fit=crop&q=80"
                             alt="Thumbnail 3"
                             class="thumbnail"
                     />
                     <img
-                            src="/api/placeholder/80/80"
+                            src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=800&auto=format&fit=crop&q=80"
                             alt="Thumbnail 4"
                             class="thumbnail"
                     />

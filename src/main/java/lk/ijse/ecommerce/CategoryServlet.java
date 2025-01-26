@@ -5,6 +5,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lk.ijse.ecommerce.dto.CategoryDTO;
 
 import javax.naming.Context;
 import javax.naming.InitialContext;
@@ -60,14 +61,14 @@ public class CategoryServlet extends HttpServlet {
     }
 
     private void loadCategories(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        List<Category> categories = new ArrayList<>();
+        List<CategoryDTO> categories = new ArrayList<>();
 
         try (Connection connection = dataSource.getConnection();
              PreparedStatement ps = connection.prepareStatement("SELECT * FROM category");
              ResultSet rs = ps.executeQuery()) {
 
             while (rs.next()) {
-                Category category = new Category(
+                CategoryDTO category = new CategoryDTO(
                         rs.getString("id"),
                         rs.getString("name"),
                         rs.getString("description"),
@@ -77,7 +78,7 @@ public class CategoryServlet extends HttpServlet {
             }
 
             request.setAttribute("categories", categories);
-            request.getRequestDispatcher("pages/admin-categoryManagement.jsp").forward(request, response);
+            request.getRequestDispatcher("admin-categoryManagement.jsp").forward(request, response);
 
         } catch (SQLException e) {
             throw new ServletException("Error loading categories", e);
@@ -85,21 +86,18 @@ public class CategoryServlet extends HttpServlet {
     }
 
     private void createCategory(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String categoryCode = generateCategoryId();
         String categoryName = request.getParameter("categoryName");
         String description = request.getParameter("categoryDescription");
-        String imageUrl = request.getParameter("categoryImage");
+        String imageUrl = request.getParameter("categoryImage"); // Assume this is the path to the image
 
         try (Connection connection = dataSource.getConnection();
-             PreparedStatement ps = connection.prepareStatement("INSERT INTO category (id, name, description, image) VALUES (?, ?, ?, ?)")) {
-
-            ps.setString(1, categoryCode);
-            ps.setString(2, categoryName);
-            ps.setString(3, description);
-            ps.setString(4, imageUrl);
+             PreparedStatement ps = connection.prepareStatement("INSERT INTO category (name, description, image) VALUES (?, ?, ?)")) {
+            ps.setString(1, categoryName);
+            ps.setString(2, description);
+            ps.setString(3, imageUrl);
             ps.executeUpdate();
 
-            response.sendRedirect("pages/admin-categoryManagement?action=load");
+            response.sendRedirect("category-servlet?action=load");
 
         } catch (SQLException e) {
             throw new ServletException("Error creating category", e);
@@ -116,7 +114,7 @@ public class CategoryServlet extends HttpServlet {
             ResultSet rs = ps.executeQuery();
 
             if (rs.next()) {
-                Category category = new Category(
+                CategoryDTO category = new CategoryDTO(
                         rs.getString("id"),
                         rs.getString("name"),
                         rs.getString("description"),
@@ -124,7 +122,7 @@ public class CategoryServlet extends HttpServlet {
                 );
 
                 request.setAttribute("category", category);
-                request.getRequestDispatcher("pages/admin-categoryManagement.jsp").forward(request, response);
+                request.getRequestDispatcher("admin-categoryManagement.jsp").forward(request, response);
             }
 
         } catch (SQLException e) {
@@ -147,7 +145,7 @@ public class CategoryServlet extends HttpServlet {
             ps.setString(4, categoryCode);
             ps.executeUpdate();
 
-            response.sendRedirect("pages/admin-categoryManagement?action=load");
+            response.sendRedirect("admin-categoryManagement.jsp?action=load");
 
         } catch (SQLException e) {
             throw new ServletException("Error updating category", e);
@@ -163,30 +161,10 @@ public class CategoryServlet extends HttpServlet {
             ps.setString(1, categoryCode);
             ps.executeUpdate();
 
-            response.sendRedirect("pages/admin-categoryManagement?action=load");
+            response.sendRedirect("admin-categoryManagement.jsp?action=load");
 
         } catch (SQLException e) {
             throw new ServletException("Error deleting category", e);
         }
-    }
-
-    private String generateCategoryId() {
-        try (Connection connection = dataSource.getConnection();
-             PreparedStatement ps = connection.prepareStatement("SELECT MAX(id) FROM category");
-             ResultSet rs = ps.executeQuery()) {
-
-            if (rs.next()) {
-                String lastId = rs.getString(1);
-                if (lastId != null) {
-                    int num = Integer.parseInt(lastId.substring(3)) + 1;
-                    return String.format("C00-%03d", num);
-                }
-            }
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        return "C00-001";
     }
 }

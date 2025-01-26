@@ -53,13 +53,13 @@ public class CustomerSaveServlet extends HttpServlet {
                         confirmPassword == null || confirmPassword.isEmpty()) {
 
             request.setAttribute("error", "All fields are required.");
-            request.getRequestDispatcher("pages/register.jsp").forward(request, response);
+            request.getRequestDispatcher("register.jsp").forward(request, response);
             return;
         }
 
         if (!password.equals(confirmPassword)) {
             request.setAttribute("error", "Passwords do not match.");
-            request.getRequestDispatcher("pages/register.jsp").forward(request, response);
+            request.getRequestDispatcher("register.jsp").forward(request, response);
             return;
         }
 
@@ -84,21 +84,21 @@ public class CustomerSaveServlet extends HttpServlet {
 
             if (rowsInserted > 0) {
                 request.setAttribute("message", "Registration successful!");
-                request.getRequestDispatcher("pages/register.jsp").forward(request, response);
+                request.getRequestDispatcher("register.jsp").forward(request, response);
             } else {
                 request.setAttribute("error", "Registration failed. Please try again.");
-                request.getRequestDispatcher("pages/register.jsp").forward(request, response);
+                request.getRequestDispatcher("register.jsp").forward(request, response);
             }
 
         } catch (SQLException e) {
             e.printStackTrace();
             request.setAttribute("error", "Database error occurred. Please try again.");
-            request.getRequestDispatcher("pages/register.jsp").forward(request, response);
+            request.getRequestDispatcher("register.jsp").forward(request, response);
         }
     }
 
     private String generateNewUserId() {
-        String newUserId = "cus-0001"; // Default starting ID
+        String newUserId = "CUS-0001"; // Default starting ID
 
         String getLastUserIdSQL = "SELECT userId FROM users ORDER BY userId DESC LIMIT 1";
         try (Connection connection = dataSource.getConnection();
@@ -109,9 +109,9 @@ public class CustomerSaveServlet extends HttpServlet {
                 String lastUserId = resultSet.getString("userId");
 
                 int lastUserIdNumber = Integer.parseInt(lastUserId.substring(4));
-                newUserId = "cus-" + String.format("%04d", lastUserIdNumber + 1);
+                newUserId = "CUS-" + String.format("%04d", lastUserIdNumber + 1);
             } else {
-                newUserId = "cus-0001";
+                newUserId = "CUS-0001";
             }
 
         } catch (SQLException e) {

@@ -12,4 +12,12 @@
         <servlet-name>CustomerViewServlet</servlet-name>
         <url-pattern>/customer-view-servlet</url-pattern>
     </servlet-mapping>
+    <servlet>
+        <servlet-name>ProductServlet</servlet-name>
+        <servlet-class>lk.ijse.ecommerce.ProductServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>ProductServlet</servlet-name>
+        <url-pattern>/product</url-pattern>
+    </servlet-mapping>
 </web-app>

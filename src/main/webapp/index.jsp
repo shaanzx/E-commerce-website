@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login - Shoe Mart</title>
+    <title>Login - Stepz With Shanz</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link href="css/style.css" rel="stylesheet">
@@ -27,7 +27,7 @@
                     <!-- Logo Section -->
                     <div class="logo-section d-flex align-items-center mb-4">
                         <i class="fas fa-cubes fa-2x me-3"></i>
-                        <span class="h2 fw-bold mb-0">SHOE MART</span>
+                        <span class="h2 fw-bold mb-0">Stepz With Shanz</span>
                     </div>
 
                     <h4 class="fw-normal mb-3 pb-3" style="letter-spacing: 1px;">Sign in to your account</h4>

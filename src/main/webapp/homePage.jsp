@@ -1,8 +1,8 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>Modern Product Home Page</title>
     <link
             href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
@@ -231,6 +231,7 @@
             height: 3rem;
             border-width: 5px;
         }
+
         /*Carousal*/
         .carousel-item {
             object-fit: cover;
@@ -300,10 +301,12 @@
             width: 100%;
             box-sizing: border-box; /* Ensures padding and border are included in width */
         }
+
         .f-container {
             height: 20px; /* Example height for inner container */
             background: linear-gradient(268deg, #452b4bfa, #a054ff, #452b4bfa);
         }
+
         .f-container p {
             text-align: center;
             color: white;
@@ -316,36 +319,58 @@
             --primary: #8B31FF;
             --primary-dark: #6B24C2;
         }
+
         .bg-primary-gradient {
             background: linear-gradient(45deg, var(--primary), var(--primary-dark));
         }
+
         .btn-primary {
             background-color: var(--primary);
             border-color: var(--primary);
         }
+
         .btn-primary:hover {
             background-color: var(--primary-dark);
             border-color: var(--primary-dark);
         }
+
         .text-primary {
             color: var(--primary) !important;
         }
+
         .footer-link {
             color: #ffffff;
             text-decoration: none;
             transition: color 0.3s ease;
         }
+
         .footer-link:hover {
             color: rgba(255, 255, 255, 0.8);
         }
+
         .social-icon {
             font-size: 1.5rem;
             margin-right: 1rem;
             color: #ffffff;
             transition: color 0.3s ease;
         }
+
         .social-icon:hover {
             color: var(--primary);
+        }
+
+        .first-image {
+            height: 400px;
+            object-fit: cover;
+        }
+
+        .second-image {
+            height: auto;
+        }
+
+        .third-image {
+            height: 400px;
+            object-fit: cover;
         }
 
     </style>
@@ -374,7 +399,7 @@
             </button>
             <a class="navbar-brand" href="#">
                 <i class="fas fa-cubes fa-2x me-3"></i>
-                <span class="h2 fw-bold mb-0">SHOE MART</span>
+                <span class="h2 fw-bold mb-0">Stepz With Shanz</span>
             </a>
             <div class="collapse navbar-collapse" id="navbarExample">
                 <ul class="navbar-nav me-auto mb-0">
@@ -382,7 +407,7 @@
                         <a class="nav-link active" href="#">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">New Arrivals</a>
+                        <a class="nav-link" href="#new-arrivals">New Arrivals</a>
                     </li>
                     <li class="nav-item dropdown">
                         <a
@@ -392,17 +417,11 @@
                         >Collection</a
                         >
                         <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="#">Men</a></li>
+                            <li><a class="dropdown-item" href="menShoeCollection.jsp">Men</a></li>
                             <li><a class="dropdown-item" href="#">Women</a></li>
                             <li><a class="dropdown-item" href="#">Child</a></li>
                             <li><a class="dropdown-item" href="#">Sport</a></li>
                             <li><a class="dropdown-item" href="#">Casual</a></li>
-                            <!-- <li>
-                                          <hr class="dropdown-divider"/>
-                                      </li>
-                                      <li>
-                                          <a class="dropdown-item" href="#">Something else here</a>
-                                      </li> -->
                         </ul>
                     </li>
                 </ul>
@@ -487,6 +506,12 @@
                         class="rounded-circle header-profile-image"
                         style="width: 40px; height: 40px; object-fit: cover"
                 />
+            </a>
+        </div>
+        <!-- Logout Section -->
+        <div class="logout">
+            <a href="index.jsp" class="text-decoration-none">
+                <i class="fas fa-sign-out-alt fa-lg text-danger"></i>
             </a>
         </div>
     </div>
@@ -596,16 +621,16 @@
                             running shoe. Featuring responsive cushioning and a breathable
                             knit upper, the Ultra Boost is designed to elevate your
                             running experience. The innovative Boost midsole returns
-                            energy with every step, while the Primeknit upper adapts to
+                            energy with every step, while the Prime knit upper adapts to
                             your foot's changing shape during your run, reducing pressure
                             and enhancing comfort.
                         </p>
                         <p>Key Features:</p>
                         <ul>
                             <li>Responsive Boost midsole for energy return</li>
-                            <li>Flexible Primeknit upper for adaptive fit</li>
+                            <li>Flexible Prime knit upper for adaptive fit</li>
                             <li>Continental™ Rubber outsole for extraordinary grip</li>
-                            <li>Torsion System for midfoot integrity</li>
+                            <li>Torsion System for mid foot integrity</li>
                             <li>Lightweight construction for effortless runs</li>
                         </ul>
                         <h4 class="mt-4">
@@ -786,11 +811,6 @@
 
 <!-- //////////////////////////////////////////////////////////////////////////////// -->
 
-<div class="f-boarder">
-    <div class="f-container">
-        <p>Easy way to find the right shoes</p>
-    </div>
-</div>
 <div class="container my-5">
     <h2 class="text-center mb-4">Featured Products</h2>
     <div class="row g-4">
@@ -798,9 +818,9 @@
         <div class="col-md-4">
             <div class="card product-card">
                 <img
-                        src="assets/shoes-hero.jpg"
-                        class="card-img-top"
-                        alt="Product Image"
+                        src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=800&auto=format&fit=crop&q=80"
+                        class="card-img-top first-image"
+                        alt="Red Nike Sneakers"
                 />
                 <div class="card-body">
                     <h5 class="card-title">Product Title</h5>
@@ -810,13 +830,12 @@
             </div>
         </div>
 
-        <!-- Duplicate Product Cards -->
         <div class="col-md-4">
             <div class="card product-card">
                 <img
-                        src="assets/shoes-hero.jpg"
-                        class="card-img-top"
-                        alt="Product Image"
+                        src="https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?w=800&auto=format&fit=crop&q=80"
+                        class="card-img-top second-image"
+                        alt="White Sport Sneakers"
                 />
                 <div class="card-body">
                     <h5 class="card-title">Another Product</h5>
@@ -825,17 +844,18 @@
                 </div>
             </div>
         </div>
+
         <div class="col-md-4">
             <div class="card product-card">
                 <img
-                        src="assets/shoes-hero.jpg"
-                        class="card-img-top"
-                        alt="Product Image"
+                        src="https://images.unsplash.com/photo-1606107557195-0e29a4b5b4aa?w=800&auto=format&fit=crop&q=80"
+                        class="card-img-top third-image"
+                        alt="Nike Running Shoes"
                 />
                 <div class="card-body">
                     <h5 class="card-title">Third Product</h5>
                     <p class="card-text">$39.99</p>
-                    <a href="shoeDetails.jspl" class="btn btn-details">Details</a>
+                    <a href="shoeDetails.jsp" class="btn btn-details">Details</a>
                 </div>
             </div>
         </div>
@@ -853,26 +873,43 @@
             style="width: 90%"
     >
         <div class="carousel-inner">
+            <!-- First Slide -->
             <div class="carousel-item active">
                 <img
-                        src="assets/Image-1.png"
+                        src="https://images.unsplash.com/photo-1549298916-b41d501d3772?w=1600&auto=format&fit=crop&q=80"
                         class="d-block w-100 rounded shadow"
-                        alt="Image 1"
+                        alt="Premium Sneakers"
                 />
+                <div class="carousel-caption d-none d-md-block">
+                    <h5>Premium Sneakers</h5>
+                    <p>Step into style with our exclusive collection of premium sneakers.</p>
+                </div>
             </div>
+
+            <!-- Second Slide -->
             <div class="carousel-item">
                 <img
-                        src="assets/image-3.png"
+                        src="https://images.unsplash.com/photo-1460353581641-37baddab0fa2?w=1600&auto=format&fit=crop&q=80"
                         class="d-block w-100 rounded shadow"
-                        alt="Image 2"
+                        alt="Running Shoes Collection"
                 />
+                <div class="carousel-caption d-none d-md-block">
+                    <h5>Running Shoes Collection</h5>
+                    <p>Experience ultimate comfort and performance with our running shoes.</p>
+                </div>
             </div>
+
+            <!-- Third Slide -->
             <div class="carousel-item">
                 <img
-                        src="assets/image-2.png"
+                        src="https://images.unsplash.com/photo-1552346154-21d32810aba3?w=1600&auto=format&fit=crop&q=80"
                         class="d-block w-100 rounded shadow"
-                        alt="Image 3"
+                        alt="Sport Shoes Display"
                 />
+                <div class="carousel-caption d-none d-md-block">
+                    <h5>Sport Shoes Display</h5>
+                    <p>Explore our wide range of sport shoes for every activity.</p>
+                </div>
             </div>
         </div>
         <button
@@ -897,8 +934,8 @@
 </div>
 
 <!-- New Arrivals -->
-<div class="container my-5">
-    <h2 class="text-center mb-4">New Arrivals</h2>
+<div class="container my-5" >
+    <h2 class="text-center mb-4" id="new-arrivals">New Arrivals</h2>
     <div class="row g-4">
         <!-- Product 1 -->
         <div class="col-md-3">
@@ -907,10 +944,9 @@
                     style="border: 2px solid #ccc; border-radius: 15px"
             >
                 <img
-                        src="assets/shoes-hero.jpg"
+                        src="https://images.unsplash.com/photo-1491553895911-0055eca6402d?w=400&h=300&fit=crop&q=80"
                         class="card-img-top"
-                        alt="Product Image"
-                        style="border-bottom: 5px solid #ff5722"
+                        alt="Stylish Sneakers"
                 />
                 <div class="card-body text-center">
                     <h5 class="card-title">Stylish Sneakers</h5>
@@ -926,8 +962,7 @@
                     border-radius: 25px;
                     width: 100%;
                   "
-                    >Buy Now</a
-                    >
+                    >Buy Now</a>
                 </div>
             </div>
         </div>
@@ -938,10 +973,9 @@
                     style="border: 2px solid #ccc; border-radius: 15px"
             >
                 <img
-                        src="assets/shoes-hero.jpg"
+                        src="https://images.unsplash.com/photo-1542219550-37153d387c27?w=400&h=300&fit=crop&q=80"
                         class="card-img-top"
-                        alt="Product Image"
-                        style="border-bottom: 5px solid #ff5722"
+                        alt="Running Shoes"
                 />
                 <div class="card-body text-center">
                     <h5 class="card-title">Running Shoes</h5>
@@ -957,8 +991,7 @@
                     border-radius: 25px;
                     width: 100%;
                   "
-                    >Buy Now</a
-                    >
+                    >Buy Now</a>
                 </div>
             </div>
         </div>
@@ -969,10 +1002,9 @@
                     style="border: 2px solid #ccc; border-radius: 15px"
             >
                 <img
-                        src="assets/shoes-hero.jpg"
+                        src="https://images.unsplash.com/photo-1549298916-f52d724204b4?w=400&h=300&fit=crop&q=80"
                         class="card-img-top"
-                        alt="Product Image"
-                        style="border-bottom: 5px solid #ff5722"
+                        alt="Leather Shoes"
                 />
                 <div class="card-body text-center">
                     <h5 class="card-title">Leather Shoes</h5>
@@ -988,8 +1020,7 @@
                     border-radius: 25px;
                     width: 100%;
                   "
-                    >Buy Now</a
-                    >
+                    >Buy Now</a>
                 </div>
             </div>
         </div>
@@ -1000,10 +1031,9 @@
                     style="border: 2px solid #ccc; border-radius: 15px"
             >
                 <img
-                        src="assets/shoes-hero.jpg"
+                        src="https://images.unsplash.com/photo-1525966222134-fcfa99b8ae77?w=400&h=300&fit=crop&q=80"
                         class="card-img-top"
-                        alt="Product Image"
-                        style="border-bottom: 5px solid #ff5722"
+                        alt="Casual Shoes"
                 />
                 <div class="card-body text-center">
                     <h5 class="card-title">Casual Shoes</h5>
@@ -1019,8 +1049,7 @@
                     border-radius: 25px;
                     width: 100%;
                   "
-                    >Buy Now</a
-                    >
+                    >Buy Now</a>
                 </div>
             </div>
         </div>
@@ -1038,7 +1067,7 @@
         <div class="col-md-3 mb-4">
             <div class="card product-card">
                 <img
-                        src="assets/shoes-hero.jpg"
+                        src="https://images.unsplash.com/photo-1560769629-975ec94e6a86?w=800&auto=format&fit=crop&q=80"
                         class="card-img-top product-img"
                         alt="Stylish Sneakers"
                 />
@@ -1052,7 +1081,7 @@
         <div class="col-md-3 mb-4">
             <div class="card product-card">
                 <img
-                        src="assets/shoes-hero.jpg"
+                        src="https://images.unsplash.com/photo-1539185441755-769473a23570?w=800&auto=format&fit=crop&q=80"
                         class="card-img-top product-img"
                         alt="Running Shoes"
                 />
@@ -1066,7 +1095,7 @@
         <div class="col-md-3 mb-4">
             <div class="card product-card">
                 <img
-                        src="assets/shoes-hero.jpg"
+                        src="https://images.unsplash.com/photo-1607522370275-f14206abe5d3?w=800&auto=format&fit=crop&q=80"
                         class="card-img-top product-img"
                         alt="Leather Shoes"
                 />
@@ -1080,7 +1109,7 @@
         <div class="col-md-3 mb-4">
             <div class="card product-card">
                 <img
-                        src="assets/shoes-hero.jpg"
+                        src="https://images.unsplash.com/photo-1551107696-a4b0c5a0d9a2?w=800&auto=format&fit=crop&q=80"
                         class="card-img-top product-img"
                         alt="Casual Sneakers"
                 />
@@ -1100,7 +1129,8 @@
         <div class="row">
             <div class="col-lg-4 mb-4 mb-lg-0">
                 <h5 class="mb-3">About Us</h5>
-                <p>We are passionate about delivering high-quality products and exceptional customer service. Our mission is to provide innovative solutions that enhance your everyday life.</p>
+                <p>We are passionate about delivering high-quality products and exceptional customer service. Our
+                    mission is to provide innovative solutions that enhance your everyday life.</p>
             </div>
             <div class="col-lg-2 col-md-6 mb-4 mb-lg-0">
                 <h5 class="mb-3">Quick Links</h5>
@@ -1125,7 +1155,8 @@
                 <p>Subscribe to our newsletter for updates and exclusive offers.</p>
                 <form class="mb-3">
                     <div class="input-group">
-                        <input type="email" class="form-control" placeholder="Enter your email" aria-label="Enter your email" aria-describedby="button-addon2">
+                        <input type="email" class="form-control" placeholder="Enter your email"
+                               aria-label="Enter your email" aria-describedby="button-addon2">
                         <button class="btn btn-primary" type="button" id="button-addon2">Subscribe</button>
                     </div>
                 </form>

@@ -26,26 +26,21 @@
                 <div class="accordion-body">
                     <form id="categoryManagementForm" action="${pageContext.request.contextPath}/category-servlet" method="post" enctype="multipart/form-data">
                         <input type="hidden" name="action" value="${category == null ? 'create' : 'update'}">
-                        <input type="hidden" name="categoryCode" value="${category.categoryCode}">
+                        <input type="hidden" name="categoryCode" value="${category != null ? category.id : ''}">
                         <div class="row">
                             <div class="col-md-6 mb-3">
-                                <label class="form-label">Category Code</label>
-                                <input type="text" class="form-control" id="categoryCode" name="categoryCode" value="${category.categoryCode}" required>
-                                <div class="error-label">Category code is required (Format: C00-000)</div>
-                            </div>
-                            <div class="col-md-6 mb-3">
                                 <label class="form-label">Category Name</label>
-                                <input type="text" class="form-control" id="categoryName" name="categoryName" value="${category.categoryName}" required>
-                                <div class="error-label">Category name is required (Min 3 characters)</div>
+                                <input type="text" class="form-control" id="categoryName" name="categoryName" value="${category != null ? category.name : ''}" required>
+                                <div class="error-label" style="display:none;">Category name is required (Min 3 characters)</div>
                             </div>
                             <div class="col-md-12 mb-3">
                                 <label class="form-label">Description</label>
-                                <textarea class="form-control" id="categoryDescription" name="categoryDescription" rows="3">${category.description}</textarea>
+                                <textarea class="form-control" id="categoryDescription" name="categoryDescription" rows="3">${category != null ? category.description : ''}</textarea>
                             </div>
                             <div class="col-md-12 mb-3">
                                 <label class="form-label">Category Image</label>
                                 <input type="file" class="form-control" id="categoryImage" name="categoryImage" accept="image/*" required>
-                                <div class="error-label">Image is required (Only JPG, PNG, or GIF)</div>
+                                <div class="error-label" style="display:none;">Image is required (Only JPG, PNG, or GIF)</div>
                             </div>
                         </div>
                         <div class="row mt-3">
@@ -80,9 +75,9 @@
         <div class="row align-items-center">
             <div class="col-md-8">
                 <div class="input-group">
-          <span class="input-group-text">
-            <i class="fas fa-search"></i>
-          </span>
+                    <span class="input-group-text">
+                        <i class="fas fa-search"></i>
+                    </span>
                     <input type="search" class="form-control" placeholder="Search categories..." id="searchCategoryInput">
                 </div>
             </div>
@@ -108,15 +103,15 @@
             <tbody id="categoryTableBody">
             <c:forEach var="category" items="${categories}">
                 <tr>
-                    <td>${category.categoryCode}</td>
-                    <td>${category.categoryName}</td>
+                    <td>${category.id}</td>
+                    <td>${category.name}</td>
                     <td>${category.description}</td>
-                    <td><img src="${category.imageUrl}" alt="${category.categoryName}" style="width: 50px; height: 50px;"></td>
+                    <td><img src="${category.image}" alt="${category.name}" style="width: 50px; height: 50px;"></td>
                     <td>
-                        <a href="category-servlet?action=edit&categoryCode=${category.categoryCode}" class="btn btn-link text-primary">
+                        <a href="category-servlet?action=edit&categoryCode=${category.id}" class="btn btn-link text-primary">
                             <i class="fas fa-edit"></i>
                         </a>
-                        <a href="category-servlet?action=delete&categoryCode=${category.categoryCode}" class="btn btn-link text-danger">
+                        <a href="category-servlet?action=delete&categoryCode=${category.id}" class="btn btn-link text-danger">
                             <i class="fas fa-trash"></i>
                         </a>
                     </td>
@@ -139,13 +134,6 @@
 
     function validateCategoryForm() {
         let isValid = true;
-
-        // Category code validation (C00-000 format)
-        const categoryCode = document.getElementById('categoryCode');
-        if (!/^C\d{2}-\d{3}$/.test(categoryCode.value)) {
-            showError(categoryCode);
-            isValid = false;
-        }
 
         // Category name validation (min 3 chars)
         const categoryName = document.getElementById('categoryName');

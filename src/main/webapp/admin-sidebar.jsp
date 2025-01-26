@@ -91,7 +91,7 @@
     <div class="sidebar-header">
         <a href="#" class="sidebar-brand">
             <i class="fas fa-cubes"></i>
-            Shoe Mart Admin
+            Stepz With Shanz Admin
         </a>
     </div>
 
@@ -103,7 +103,7 @@
             </a>
         </li>
         <li class="nav-item">
-            <a href="admin-ItemManagement.jsp" class="nav-link <%= request.getRequestURI().endsWith("admin-ItemManagement.jsp") ? "active" : "" %>">
+            <a href="product" class="nav-link <%= request.getRequestURI().endsWith("admin-ItemManagement.jsp") ? "active" : "" %>">
                 <i class="fas fa-box"></i>
                 Products
             </a>
@@ -121,7 +121,7 @@
             </a>
         </li>
         <li class="nav-item">
-            <a href="admin-categoryManagement.jsp" class="nav-link <%= request.getRequestURI().endsWith("admin-categoryManagement.jsp") ? "active" : "" %>">
+            <a href="category-servlet" class="nav-link <%= request.getRequestURI().endsWith("admin-categoryManagement.jsp") ? "active" : "" %>">
                 <i class="fas fa-tags"></i>
                 Categories
             </a>
