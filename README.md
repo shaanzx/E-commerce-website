@@ -1,8 +1,9 @@
-# Stepz with Shanz 🚀
+# 👟 Stepz with Shanz 👟
 
 Welcome to **Stepz with Shanz**, a modern and dynamic e-commerce web application built using **JSP**, **HTML**, **Bootstrap**, **CSS**, **JavaScript**, and **MySQL**. This project is designed to provide a seamless shopping experience for users and an efficient management system for administrators.
 
-![Stepz with Shanz Screenshot]
+
+
 ![image](https://github.com/user-attachments/assets/deae12de-1be6-4e03-9c86-17c670813bb1)
 
 ---
@@ -64,4 +65,4 @@ Welcome to **Stepz with Shanz**, a modern and dynamic e-commerce web application
 
 1. **Clone the Repository**:
    ```bash
-   git clone https://github.com/shaanzx/stepz-with-shanz.git
+   https://github.com/shaanzx/E-commerce-website.git
