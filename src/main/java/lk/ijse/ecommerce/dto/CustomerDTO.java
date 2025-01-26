@@ -8,10 +8,11 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Data
 public class CustomerDTO {
-    private String id;
-    private String name;
+    private String userId;
+    private String username;
     private String address;
     private String email;
-    private String contact;
-    private String image;
+    private String telephone;
+    private String password;
+    private byte[] image;
 }

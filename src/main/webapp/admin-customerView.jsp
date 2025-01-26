@@ -1,4 +1,4 @@
-<%@ page import="lk.ijse.ecommerce.dto.CustomerDTO" %>
+<%@ page import="lk.ijse.ecommerce.tm.CustomerTM" %>
 <%@ page import="java.util.List" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!DOCTYPE html>
@@ -35,7 +35,7 @@
     </div>
 
     <%
-        List<CustomerDTO> customerList = (List<CustomerDTO>) request.getAttribute("customerList");
+        List<CustomerTM> customerList = (List<CustomerTM>) request.getAttribute("customerList");
         System.out.println("Customer List in JSP: " + (customerList != null ? customerList.size() : "null"));
 
         if (customerList != null && !customerList.isEmpty()) {
@@ -53,14 +53,20 @@
             </tr>
             </thead>
             <tbody id="customerTableBody">
-            <% for (CustomerDTO customer : customerList) { %>
+            <% for (CustomerTM customer : customerList) { %>
             <tr>
                 <td><%= customer.getId() %></td>
                 <td><%= customer.getName() %></td>
                 <td><%= customer.getAddress() %></td>
                 <td><%= customer.getEmail() %></td>
                 <td><%= customer.getContact() %></td>
-                <td><img src="<%= customer.getImage() %>" alt="Customer Image" width="50" height="50"></td>
+                <td>
+                    <% if (customer.getImage() != null) { %>
+                    <img src="data:image/jpeg;base64,<%= customer.getImage() %>" alt="Customer Image" width="50" height="50">
+                    <% } else { %>
+                    No Image
+                    <% } %>
+                </td>
             </tr>
             <% } %>
             </tbody>

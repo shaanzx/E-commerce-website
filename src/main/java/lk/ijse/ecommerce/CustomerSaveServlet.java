@@ -1,10 +1,12 @@
 package lk.ijse.ecommerce;
 
 import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.Part;
 import org.mindrot.jbcrypt.BCrypt;
 
 import javax.naming.Context;
@@ -12,12 +14,16 @@ import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
 import java.io.IOException;
+import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
 @WebServlet(urlPatterns = "/save-customer")
+@MultipartConfig(fileSizeThreshold = 1024 * 1024 * 2, // 2MB
+        maxFileSize = 1024 * 1024 * 10, // 10MB
+        maxRequestSize = 1024 * 1024 * 50) // 50MB
 public class CustomerSaveServlet extends HttpServlet {
 
     private DataSource dataSource;
@@ -41,16 +47,21 @@ public class CustomerSaveServlet extends HttpServlet {
         String telephone = request.getParameter("telephone");
         String password = request.getParameter("password");
         String confirmPassword = request.getParameter("confirmPassword");
-        String image = null;
+
+        // Handle image upload
+        Part imagePart = request.getPart("image");
+        InputStream imageInputStream = null;
+        if (imagePart != null && imagePart.getSize() > 0) {
+            imageInputStream = imagePart.getInputStream();
+        }
 
         // Input validation
-        if (
-                fullName == null || fullName.isEmpty() ||
-                        email == null || email.isEmpty() ||
-                        address == null || address.isEmpty() ||
-                        telephone == null || telephone.isEmpty() ||
-                        password == null || password.isEmpty() ||
-                        confirmPassword == null || confirmPassword.isEmpty()) {
+        if (fullName == null || fullName.isEmpty() ||
+                email == null || email.isEmpty() ||
+                address == null || address.isEmpty() ||
+                telephone == null || telephone.isEmpty() ||
+                password == null || password.isEmpty() ||
+                confirmPassword == null || confirmPassword.isEmpty()) {
 
             request.setAttribute("error", "All fields are required.");
             request.getRequestDispatcher("register.jsp").forward(request, response);
@@ -78,23 +89,27 @@ public class CustomerSaveServlet extends HttpServlet {
             preparedStatement.setString(5, telephone);
             preparedStatement.setString(6, hashedPassword);
             preparedStatement.setString(7, "customer");
-            preparedStatement.setString(8, image);
+
+            if (imageInputStream != null) {
+                preparedStatement.setBlob(8, imageInputStream);
+            } else {
+                preparedStatement.setNull(8, java.sql.Types.BLOB);
+            }
 
             int rowsInserted = preparedStatement.executeUpdate();
 
             if (rowsInserted > 0) {
                 request.setAttribute("message", "Registration successful!");
-                request.getRequestDispatcher("register.jsp").forward(request, response);
             } else {
                 request.setAttribute("error", "Registration failed. Please try again.");
-                request.getRequestDispatcher("register.jsp").forward(request, response);
             }
 
         } catch (SQLException e) {
             e.printStackTrace();
             request.setAttribute("error", "Database error occurred. Please try again.");
-            request.getRequestDispatcher("register.jsp").forward(request, response);
         }
+
+        request.getRequestDispatcher("register.jsp").forward(request, response);
     }
 
     private String generateNewUserId() {

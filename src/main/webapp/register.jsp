@@ -11,8 +11,8 @@
 </head>
 <style>
     .form-cart {
-        overflow-y: scroll; /* Enables vertical scrolling */
-        height: 100vh; /* Ensures the form container takes the full viewport height */
+        overflow-y: scroll;
+        height: 90vh;
     }
 </style>
 <body>
@@ -30,7 +30,7 @@
                 <div class="form-cart p-4">
                     <div class="logo-section d-flex align-items-center mb-4">
                         <i class="fas fa-cubes fa-2x me-3"></i>
-                        <span class="h2 fw-bold mb-0">Stepz With Shanz</span>
+                        <span class="h2 fw-bold mb-0">Stepz with Shanz</span>
                     </div>
 
                     <h4 class="fw-normal mb-3 pb-3" style="letter-spacing: 1px;">Create your account</h4>
@@ -49,34 +49,29 @@
                     </div>
                     <% } %>
 
-                    <form id="registerForm" action="${pageContext.request.contextPath}/save-customer" method="post" onsubmit="return validateForm('registerForm')">
+                    <form id="registerForm" action="${pageContext.request.contextPath}/save-customer" method="post" enctype="multipart/form-data">
                         <div class="form-floating mb-3">
-                            <input type="text" class="form-control" id="registerName" name="fullName"
-                                   placeholder="Full Name" required>
+                            <input type="text" class="form-control" id="registerName" name="fullName" placeholder="Full Name" required>
                             <label for="registerName">Full Name</label>
                         </div>
 
                         <div class="form-floating mb-3">
-                            <input type="email" class="form-control" id="registerEmail" name="email"
-                                   placeholder="name@example.com" required>
+                            <input type="email" class="form-control" id="registerEmail" name="email" placeholder="name@example.com" required>
                             <label for="registerEmail">Email address</label>
                         </div>
 
                         <div class="form-floating mb-3">
-                            <input type="text" class="form-control" id="address" name="address"
-                                   placeholder="Address" required>
+                            <input type="text" class="form-control" id="address" name="address" placeholder="Address" required>
                             <label for="address">Address</label>
                         </div>
 
                         <div class="form-floating mb-3">
-                            <input type="tel" class="form-control" id="telephone" name="telephone"
-                                   placeholder="Mobile No" required>
+                            <input type="tel" class="form-control" id="telephone" name="telephone" placeholder="Mobile No" required>
                             <label for="telephone">Mobile No</label>
                         </div>
 
                         <div class="form-floating mb-3 position-relative">
-                            <input type="password" class="form-control" id="registerPassword" name="password"
-                                   placeholder="Password" required>
+                            <input type="password" class="form-control" id="registerPassword" name="password" placeholder="Password" required>
                             <label for="registerPassword">Password</label>
                             <button type="button" class="btn position-absolute top-50 end-0 translate-middle-y password-toggle">
                                 <i class="fas fa-eye-slash"></i>
@@ -84,20 +79,21 @@
                         </div>
 
                         <div class="form-floating mb-4 position-relative">
-                            <input type="password" class="form-control" id="confirmPassword" name="confirmPassword"
-                                   placeholder="Confirm Password" required>
+                            <input type="password" class="form-control" id="confirmPassword" name="confirmPassword" placeholder="Confirm Password" required>
                             <label for="confirmPassword">Confirm Password</label>
                             <button type="button" class="btn position-absolute top-50 end-0 translate-middle-y password-toggle">
                                 <i class="fas fa-eye-slash"></i>
                             </button>
                         </div>
 
-                        <div class="mb-4">
-                            <button type="submit" class="gradient-button btn btn-lg w-100">
-                                Register
-                            </button>
+                        <div class="mb-3">
+                            <label for="image" class="form-label">Profile Image</label>
+                            <input type="file" class="form-control" id="image" name="image" accept="image/*">
                         </div>
 
+                        <div class="mb-4">
+                            <button type="submit" class="gradient-button btn btn-lg w-100">Register</button>
+                        </div>
                         <div class="text-center mb-4">
                             <p class="mb-0">Already have an account?
                                 <a href="login.jsp" class="link-purple">Login here</a>
